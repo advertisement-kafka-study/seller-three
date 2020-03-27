@@ -1,30 +1,29 @@
-# seller-three project
+# Overview
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+This is a repository represents the Seller Three at the Advertisement Architecture.
 
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
+# Architecture
 
-## Running the application in dev mode
+![alt text](https://raw.githubusercontent.com/advertisement-kafka-study/delivery/master/advertisement.png "Architecture")
 
-You can run your application in dev mode that enables live coding using:
-```
-./mvnw quarkus:dev
-```
+## Schema
 
-## Packaging and running the application
+All the schemas are found in `/apache-avro-producer/src/main/avro`
 
-The application can be packaged using `./mvnw package`.
-It produces the `seller-three-1.0.0-SNAPSHOT-runner.jar` file in the `/target` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/lib` directory.
+## Setup
 
-The application is now runnable using `java -jar target/seller-three-1.0.0-SNAPSHOT-runner.jar`.
+To start the Kafka Stack, first use need to download the [kafka-stack-docker-compose](https://github.com/advertisement-kafka-study/kafka-stack-docker-compose)
 
-## Creating a native executable
+After that, run the docker-compose:
 
-You can create a native executable using: `./mvnw package -Pnative`.
+`docker-compose -f full-stack.yml up`
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using: `./mvnw package -Pnative -Dquarkus.native.container-build=true`.
+# Stack
 
-You can then execute your native executable with: `./target/seller-three-1.0.0-SNAPSHOT-runner`
+[Java](https://www.java.com/en/)
 
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/building-native-image-guide.
+[Quarkus](http://quarkus.io/)
+
+[Apache Kafka](https://kafka.apache.org/)
+
+[Apache Avro](https://avro.apache.org/)
