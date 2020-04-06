@@ -1,6 +1,5 @@
 package com.example.seller;
 
-import com.example.advertisement.Advertisement;
 import io.reactivex.Flowable;
 import io.smallrye.reactive.messaging.kafka.KafkaRecord;
 import java.util.concurrent.TimeUnit;
@@ -25,7 +24,7 @@ public class Service {
         .onBackpressureDrop()
         .map(value -> {
           Advertisement advertisement = new Advertisement();
-          advertisement.setId((long) counter.getAndIncrement());
+          advertisement.setId(String.valueOf(counter.getAndIncrement()));
           advertisement.setName(applicationName);
 
           log.info("Published Message=[{}] to Topic=[{}]", advertisement, "xxx");
