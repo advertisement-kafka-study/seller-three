@@ -1,7 +1,13 @@
 package com.example.seller;
 
+import io.cloudevents.v03.CloudEventBuilder;
+import io.cloudevents.v03.CloudEventImpl;
 import io.reactivex.Flowable;
 import io.smallrye.reactive.messaging.kafka.KafkaRecord;
+import java.net.URI;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.inject.Singleton;
@@ -19,7 +25,7 @@ public class Service {
   private String applicationName;
 
   @Outgoing("advertisement")
-  public Flowable<KafkaRecord<String, Advertisement>> publishMessage() {
+  public Flowable<KafkaRecord<String, CloudEventImpl<Advertisement>>> publishMessage() {
     return Flowable.interval(1, TimeUnit.SECONDS)
         .onBackpressureDrop()
         .map(value -> {
@@ -27,8 +33,16 @@ public class Service {
           advertisement.setId(String.valueOf(counter.getAndIncrement()));
           advertisement.setName(applicationName);
 
+          CloudEventImpl<Advertisement> cloudEvent = CloudEventBuilder.<Advertisement>builder()
+              .withId(UUID.randomUUID().toString())
+              .withSource(URI.create("/advertisements/" + advertisement.getId()))
+              .withType("Advertisement")
+              .withTime(ZonedDateTime.now(ZoneOffset.UTC))
+              .withData(advertisement)
+              .build();
+
           log.info("Published Message=[{}] to Topic=[{}]", advertisement, "xxx");
-          return KafkaRecord.of(applicationName, advertisement);
+          return KafkaRecord.of(applicationName, cloudEvent);
         });
   }
 
