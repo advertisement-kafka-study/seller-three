@@ -20,7 +20,7 @@ public class OpportunityConsumer {
   public OutgoingKafkaRecord<String, CloudEventImpl<Advertisement>> process(
       Opportunity opportunity) {
     log.info("Consuming Message=[{}]", opportunity);
-    return advertisementProducer.publishMessage(); // FIXME
+    return advertisementProducer.publishMessage();
   }
 
 }
