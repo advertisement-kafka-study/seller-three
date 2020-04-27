@@ -8,7 +8,6 @@ import java.net.URI;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -17,15 +16,14 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 @Slf4j
 public class AdvertisementProducer {
 
-  private final AtomicInteger counter = new AtomicInteger(1);
-
   @ConfigProperty(name = "quarkus.application.name")
   private String applicationName;
 
-  public OutgoingKafkaRecord<String, CloudEventImpl<Advertisement>> publishMessage() {
+  public OutgoingKafkaRecord<String, CloudEventImpl<Advertisement>> publishMessage(
+      Opportunity opportunity) {
 
     Advertisement advertisement = new Advertisement();
-    advertisement.setId(String.valueOf(counter.getAndIncrement()));
+    advertisement.setId(opportunity.getId());
     advertisement.setName(applicationName);
 
     CloudEventImpl<Advertisement> cloudEvent = CloudEventBuilder.<Advertisement>builder()
