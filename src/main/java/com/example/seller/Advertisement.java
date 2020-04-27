@@ -13,6 +13,8 @@ public class Advertisement {
 
   private String id;
 
-  private String name;
+  private String content;
+
+  private String callback;
 
 }
